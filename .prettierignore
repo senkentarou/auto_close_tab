@@ -1,0 +1,10 @@
+*.json
+*.md
+*.html
+*.yml
+
+.git/
+
+node_modules/
+docs/
+build/
