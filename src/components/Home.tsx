@@ -14,24 +14,26 @@ const AppTitle = styled(Typography)({
   marginLeft: '1rem'
 });
 
+type Hash = { [key: string]: string };
+
 export const Home: React.VFC = () => {
-  const [list, setList] = useState<Array<string>>([]);
-  const [pattern, setPattern] = useState<string>('');
+  const [blackListTable, setBlackListTable] = useState<Array<Hash>>([]);
+  const [blackListRow, setBlackListRow] = useState<Hash>({});
 
   const handleSetList = () => {
-    if (pattern === '') {
+    if (Object.keys(blackListRow).length === 0) {
       return;
     }
-    const nextList = [...list, pattern];
-    chrome.storage.local.set({'list': nextList}, () => {
-      setList(nextList);
-      setPattern('');
+    const nextList = [...blackListTable, blackListRow];
+    chrome.storage.local.set({ 'blackListTable': nextList }, () => {
+      setBlackListTable(nextList);
+      setBlackListRow({});
     });
   };
 
   useEffect(() => {
-    chrome.storage.local.get('list', (data) => {
-      setList(data['list'] || []);
+    chrome.storage.local.get('blackListTable', (data) => {
+      setBlackListTable(data['blackListTable'] || []);
     });
   }, []);
 
@@ -40,10 +42,10 @@ export const Home: React.VFC = () => {
       <MyAppBar position="static">
         <AppTitle variant="h4">my-react-base-app</AppTitle>
       </MyAppBar>
-      {list.map((data) => {
-        return <div>{data}</div>
+      {blackListTable.map((data) => {
+        return <div>{data['pattern']}</div>
       })}
-      <input onChange={(e) => setPattern(e.target.value)} value={pattern} />
+      <input onChange={(e) => setBlackListRow({ ...blackListRow, pattern: e.target.value })} value={blackListRow['pattern'] || ''} />
       <button onClick={handleSetList}>追加</button>
     </>
   );
