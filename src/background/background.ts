@@ -1,13 +1,13 @@
 // タブページ更新時
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  chrome.storage.local.get('list', (data) => {
-    if (!data['list'] || !changeInfo.url) {
+  chrome.storage.local.get('blackListTable', (data) => {
+    if (!data['blackListTable'] || !changeInfo.url) {
       return;
     }
 
-    for (const li of data['list']) {
+    for (const li of data['blackListTable']) {
       // 正規表現の一致するURLにアクセスしていたらタブを閉じる
-      const regexp = new RegExp(li);
+      const regexp = new RegExp(li['pattern']);
       if (changeInfo.url?.match(regexp)) {
         chrome.tabs.remove(tabId);
         break;
