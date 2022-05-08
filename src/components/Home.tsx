@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { AppBar, Typography } from '@mui/material';
+import { AppBar, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const MyAppBar = styled(AppBar)({
@@ -40,13 +40,35 @@ export const Home: React.VFC = () => {
   return (
     <>
       <MyAppBar position="static">
-        <AppTitle variant="h4">my-react-base-app</AppTitle>
+        <AppTitle variant="h4">Auto Close Tab</AppTitle>
       </MyAppBar>
-      {blackListTable.map((data) => {
-        return <div>{data['pattern']}</div>
-      })}
-      <input onChange={(e) => setBlackListRow({ ...blackListRow, pattern: e.target.value })} value={blackListRow['pattern'] || ''} />
-      <button onClick={handleSetList}>追加</button>
+      <Typography variant="h5">
+        Blacklisted sites
+      </Typography>
+      <TableContainer>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                pattern
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {blackListTable.map((data) => {
+              return (
+                <TableRow>
+                  <TableCell>
+                    {data['pattern']}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TextField onChange={(e) => setBlackListRow({ ...blackListRow, pattern: e.target.value })} value={blackListRow['pattern'] || ''} />
+      <Button variant="contained" onClick={handleSetList}>追加</Button>
     </>
   );
 };
