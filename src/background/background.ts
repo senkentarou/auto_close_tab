@@ -7,10 +7,17 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     for (const li of data['blackListTable']) {
       // 正規表現の一致するURLにアクセスしていたらタブを閉じる
-      const regexp = new RegExp(li['pattern']);
-      if (changeInfo.url?.match(regexp)) {
-        chrome.tabs.remove(tabId);
-        break;
+      if (li['regexp']) {
+        const regexp = new RegExp(li['pattern']);
+        if (changeInfo.url?.match(regexp)) {
+          chrome.tabs.remove(tabId);
+          break;
+        }
+      } else {
+        if (changeInfo.url === li['pattern']) {
+          chrome.tabs.remove(tabId);
+          break;
+        }
       }
     }
   });
