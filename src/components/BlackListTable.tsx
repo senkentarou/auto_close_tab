@@ -12,14 +12,16 @@ import {
   Typography,
   FormControl,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const BlackListTableContainer = styled(TableContainer)({
   width: '100%',
-  height: '20rem',
-  marginBottom: '1rem'
+  height: '18rem',
+  marginBottom: '2rem'
 });
 
 const BlackListFormControl = styled(FormControl)({
@@ -28,7 +30,7 @@ const BlackListFormControl = styled(FormControl)({
 });
 
 const BlackListInput = styled(TextField)({
-  width: '300px',
+  width: '600px',
   marginRight: '1rem'
 });
 
@@ -50,13 +52,28 @@ export const BlackListTable: React.VFC = () => {
   const [blackListRow, setBlackListRow] = useState<BlackListRow>(initialBlackListRow);
 
   const handleSetList = () => {
+    // 空白のみは弾く
     if (blackListRow['pattern'].trim() === '') {
       return;
     }
+
+    // 同じパターンなら弾く
+    const samePatternIndex = blackListTable.findIndex((data) => data['pattern'] === blackListRow['pattern']);
+    if (samePatternIndex !== -1) {
+      return;
+    }
+
     const nextList = [...blackListTable, blackListRow];
     chrome.storage.local.set({ blackListTable: nextList }, () => {
       setBlackListTable(nextList);
       setBlackListRow(initialBlackListRow);
+    });
+  };
+
+  const handleDeleteRow = (data: BlackListRow) => {
+    const nextList = blackListTable.filter((blackListRow) => blackListRow['pattern'] !== data['pattern']);
+    chrome.storage.local.set({ blackListTable: nextList }, () => {
+      setBlackListTable(nextList);
     });
   };
 
@@ -75,6 +92,7 @@ export const BlackListTable: React.VFC = () => {
             <TableRow>
               <TableCell>pattern</TableCell>
               <TableCell>regexp</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,6 +101,11 @@ export const BlackListTable: React.VFC = () => {
                 <TableRow key={idx}>
                   <TableCell>{data['pattern']}</TableCell>
                   <TableCell>{data['regexp'].toString()}</TableCell>
+                  <TableCell align="center">
+                    <IconButton onClick={() => handleDeleteRow(data)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               );
             })}
