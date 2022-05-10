@@ -18,6 +18,10 @@ import {
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+const BlackListContainer = styled(Container)({
+  marginBottom: '4rem'
+});
+
 const BlackListTableContainer = styled(TableContainer)({
   width: '100%',
   height: '18rem',
@@ -84,7 +88,7 @@ export const BlackListTable: React.VFC = () => {
   }, []);
 
   return (
-    <Container>
+    <BlackListContainer>
       <Typography variant="h5">Blacklisted sites</Typography>
       <BlackListTableContainer>
         <Table stickyHeader>
@@ -136,6 +140,6 @@ export const BlackListTable: React.VFC = () => {
           追加
         </Button>
       </BlackListFormControl>
-    </Container>
+    </BlackListContainer>
   );
 };
