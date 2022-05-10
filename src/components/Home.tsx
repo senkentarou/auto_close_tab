@@ -3,6 +3,7 @@ import { AppBar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { BlackListTable } from './BlackListTable';
+import { WhiteListTable } from './WhiteListTable';
 
 const MyAppBar = styled(AppBar)({
   width: '100%',
@@ -22,6 +23,7 @@ export const Home: React.VFC = () => {
         <AppTitle variant="h4">Auto Close Tab</AppTitle>
       </MyAppBar>
       <BlackListTable />
+      <WhiteListTable />
     </>
   );
 };

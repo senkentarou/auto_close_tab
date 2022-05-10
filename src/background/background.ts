@@ -1,7 +1,26 @@
 // タブページ更新時
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  chrome.storage.local.get('blackListTable', (data) => {
-    if (!data['blackListTable'] || !changeInfo.url) {
+  chrome.storage.local.get(['blackListTable', 'whiteListTable'], (data) => {
+    if (!changeInfo.url) {
+      return;
+    }
+
+    // ホワイトリストの処理
+    if (data['whiteListTable']) {
+      for (const li of data['whiteListTable']) {
+        if (li['regexp']) {
+          const regexp = new RegExp(li['pattern']);
+          if (changeInfo.url?.match(regexp)) {
+            return;
+          }
+        } else if (changeInfo.url === li['pattern']) {
+          return;
+        }
+      }
+    }
+
+    // ブラックリストの処理
+    if (!data['blackListTable']) {
       return;
     }
 
@@ -13,11 +32,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
           chrome.tabs.remove(tabId);
           break;
         }
-      } else {
-        if (changeInfo.url === li['pattern']) {
-          chrome.tabs.remove(tabId);
-          break;
-        }
+      } else if (changeInfo.url === li['pattern']) {
+        chrome.tabs.remove(tabId);
+        break;
       }
     }
   });
