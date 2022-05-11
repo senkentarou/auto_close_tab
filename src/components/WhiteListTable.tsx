@@ -86,7 +86,7 @@ export const WhiteListTable: React.VFC = () => {
 
   return (
     <Container>
-      <Typography variant="h5">WhiteListed sites</Typography>
+      <Typography variant="h5">Whitelisted sites</Typography>
       <WhiteListFormControl>
         <WhiteListInput
           label="pattern"
