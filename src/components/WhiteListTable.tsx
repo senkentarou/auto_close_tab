@@ -26,7 +26,8 @@ const WhiteListTableContainer = styled(TableContainer)({
 
 const WhiteListFormControl = styled(FormControl)({
   width: '100%',
-  display: 'inline-block'
+  display: 'inline-block',
+  marginTop: '1rem'
 });
 
 const WhiteListInput = styled(TextField)({
@@ -86,6 +87,30 @@ export const WhiteListTable: React.VFC = () => {
   return (
     <Container>
       <Typography variant="h5">WhiteListed sites</Typography>
+      <WhiteListFormControl>
+        <WhiteListInput
+          label="pattern"
+          size="small"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setWhiteListRow({ ...whiteListRow, pattern: e.target.value })
+          }
+          value={whiteListRow['pattern'] || ''}
+        />
+        <FormControlLabel
+          label="regexp"
+          control={
+            <Checkbox
+              checked={whiteListRow['regexp']}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setWhiteListRow({ ...whiteListRow, regexp: e.target.checked })
+              }
+            />
+          }
+        />
+        <Button variant="contained" onClick={handleSetList}>
+          追加
+        </Button>
+      </WhiteListFormControl>
       <WhiteListTableContainer>
         <Table stickyHeader>
           <TableHead>
@@ -112,30 +137,6 @@ export const WhiteListTable: React.VFC = () => {
           </TableBody>
         </Table>
       </WhiteListTableContainer>
-      <WhiteListFormControl>
-        <WhiteListInput
-          label="pattern"
-          size="small"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setWhiteListRow({ ...whiteListRow, pattern: e.target.value })
-          }
-          value={whiteListRow['pattern'] || ''}
-        />
-        <FormControlLabel
-          label="regexp"
-          control={
-            <Checkbox
-              checked={whiteListRow['regexp']}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setWhiteListRow({ ...whiteListRow, regexp: e.target.checked })
-              }
-            />
-          }
-        />
-        <Button variant="contained" onClick={handleSetList}>
-          追加
-        </Button>
-      </WhiteListFormControl>
     </Container>
   );
 };

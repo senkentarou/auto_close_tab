@@ -19,7 +19,7 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const BlackListContainer = styled(Container)({
-  marginBottom: '4rem'
+  marginBottom: '2rem'
 });
 
 const BlackListTableContainer = styled(TableContainer)({
@@ -30,7 +30,8 @@ const BlackListTableContainer = styled(TableContainer)({
 
 const BlackListFormControl = styled(FormControl)({
   width: '100%',
-  display: 'inline-block'
+  display: 'inline-block',
+  marginTop: '1rem'
 });
 
 const BlackListInput = styled(TextField)({
@@ -90,6 +91,30 @@ export const BlackListTable: React.VFC = () => {
   return (
     <BlackListContainer>
       <Typography variant="h5">Blacklisted sites</Typography>
+      <BlackListFormControl>
+        <BlackListInput
+          label="pattern"
+          size="small"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setBlackListRow({ ...blackListRow, pattern: e.target.value })
+          }
+          value={blackListRow['pattern'] || ''}
+        />
+        <FormControlLabel
+          label="regexp"
+          control={
+            <Checkbox
+              checked={blackListRow['regexp']}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setBlackListRow({ ...blackListRow, regexp: e.target.checked })
+              }
+            />
+          }
+        />
+        <Button variant="contained" onClick={handleSetList}>
+          追加
+        </Button>
+      </BlackListFormControl>
       <BlackListTableContainer>
         <Table stickyHeader>
           <TableHead>
@@ -116,30 +141,6 @@ export const BlackListTable: React.VFC = () => {
           </TableBody>
         </Table>
       </BlackListTableContainer>
-      <BlackListFormControl>
-        <BlackListInput
-          label="pattern"
-          size="small"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setBlackListRow({ ...blackListRow, pattern: e.target.value })
-          }
-          value={blackListRow['pattern'] || ''}
-        />
-        <FormControlLabel
-          label="regexp"
-          control={
-            <Checkbox
-              checked={blackListRow['regexp']}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setBlackListRow({ ...blackListRow, regexp: e.target.checked })
-              }
-            />
-          }
-        />
-        <Button variant="contained" onClick={handleSetList}>
-          追加
-        </Button>
-      </BlackListFormControl>
     </BlackListContainer>
   );
 };
