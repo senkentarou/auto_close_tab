@@ -123,7 +123,7 @@ export const WhiteListTable: React.VFC = () => {
           <TableBody>
             {whiteListTable.map((data, idx) => {
               return (
-                <TableRow key={idx}>
+                <TableRow key={idx} style={{ wordBreak: 'break-all' }}>
                   <TableCell>{data['pattern']}</TableCell>
                   <TableCell>{data['regexp'].toString()}</TableCell>
                   <TableCell align="center">
