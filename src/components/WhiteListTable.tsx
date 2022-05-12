@@ -108,7 +108,7 @@ export const WhiteListTable: React.VFC = () => {
           }
         />
         <Button variant="contained" onClick={handleSetList}>
-          追加
+          Add
         </Button>
       </WhiteListFormControl>
       <WhiteListTableContainer>
