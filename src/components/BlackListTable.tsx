@@ -13,8 +13,7 @@ import {
   FormControl,
   FormControlLabel,
   Checkbox,
-  IconButton,
-  Collapse
+  IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -117,51 +116,22 @@ export const BlackListTable: React.VFC = () => {
           <TableHead>
             <TableRow>
               <TableCell>pattern</TableCell>
+              <TableCell>regexp</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {blackListTable.map((data, idx) => {
               return (
-                <>
-                  <TableRow key={idx} style={{ wordBreak: 'break-all' }}>
-                    <TableCell>{data['pattern']}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <Collapse in={true} timeout="auto" unmountOnExit>
-                        <BlackListFormControl>
-                          <div style={{ fontSize: '2rem', display: 'inline-flex', marginRight: '1rem' }}>
-                            <TextField
-                              disabled
-                              value={0}
-                              label="current"
-                              size="small"
-                              type="number"
-                              inputProps={{ max: 999, min: 0 }}
-                              style={{ width: '5rem', marginRight: '0.5rem' }}
-                            />
-                            /
-                            <TextField
-                              disabled
-                              label="limit"
-                              size="small"
-                              type="number"
-                              inputProps={{ max: 999, min: 0 }}
-                              style={{ width: '5rem', marginLeft: '0.5rem' }}
-                            />
-                          </div>
-                          <FormControlLabel
-                            label="regexp"
-                            control={<Checkbox checked={blackListRow['regexp']} disabled />}
-                          />
-                          <IconButton onClick={() => handleDeleteRow(data)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </BlackListFormControl>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
+                <TableRow key={idx} style={{ wordBreak: 'break-all' }}>
+                  <TableCell>{data['pattern']}</TableCell>
+                  <TableCell>{data['regexp'].toString()}</TableCell>
+                  <TableCell align="center">
+                    <IconButton onClick={() => handleDeleteRow(data)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
               );
             })}
           </TableBody>
