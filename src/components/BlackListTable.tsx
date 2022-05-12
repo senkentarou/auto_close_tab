@@ -125,7 +125,9 @@ export const BlackListTable: React.VFC = () => {
               return (
                 <TableRow key={idx} style={{ wordBreak: 'break-all' }}>
                   <TableCell>{data['pattern']}</TableCell>
-                  <TableCell>{data['regexp'].toString()}</TableCell>
+                  <TableCell>
+                    <Checkbox disabled checked={data['regexp']} />
+                  </TableCell>
                   <TableCell align="center">
                     <IconButton onClick={() => handleDeleteRow(data)}>
                       <DeleteIcon />
