@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Container, Switch, Typography } from '@mui/material';
 
@@ -33,13 +34,32 @@ const addList = (name: string) => {
 };
 
 const Popup = () => {
+  const [appEnabled, setAppEnabled] = useState<boolean | null>(null);
+
+  const handleUpdateUpEnabled = (nextEnabled: boolean) => {
+    chrome.storage.local.set({ enabled: nextEnabled }, () => {
+      setAppEnabled(nextEnabled);
+    });
+  };
+
+  useEffect(() => {
+    chrome.storage.local.get(['enabled'], (data: { [key: string]: boolean | undefined }) => {
+      setAppEnabled(!!data['enabled']);
+    });
+  }, []);
+
   return (
     <Container style={{ width: '15rem', height: '13rem' }}>
       <div style={{ display: 'inline-block' }}>
         <Typography component="span" style={{ verticalAlign: 'middle', marginRight: '0.5rem' }}>
           Auto Close Tab
         </Typography>
-        <Switch />
+        {appEnabled != null && (
+          <Switch
+            checked={appEnabled}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpdateUpEnabled(e.target.checked)}
+          />
+        )}
       </div>
       <Button onClick={() => addList('blackListTable')}>Add current site to Blacklist</Button>
       <Button onClick={() => addList('whiteListTable')}>Add current site to Whitelist</Button>

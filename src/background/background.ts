@@ -8,9 +8,9 @@ type DataHash = {
 
 // タブページ更新時
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
-  chrome.storage.local.get(['blackListTable', 'whiteListTable'], (data: Data) => {
-    // urlが存在しないなら処理しない
-    if (!changeInfo.url) {
+  chrome.storage.local.get(['enabled', 'blackListTable', 'whiteListTable'], (data: Data) => {
+    // 有効設定していない場合 or urlが存在しないなら処理しない
+    if (!data['enabled'] || !changeInfo.url) {
       return;
     }
 
@@ -64,4 +64,6 @@ chrome.runtime.onInstalled.addListener(() => {
   // 設定ページを開く
   const url = chrome.runtime.getURL('index.html');
   chrome.tabs.create({ url }).catch((e: unknown) => console.error(e));
+  // この拡張機能を有効化
+  chrome.storage.local.set({ enabled: true }).catch((e: unknown) => console.error(e));
 });
