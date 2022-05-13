@@ -20,12 +20,20 @@ const addList = (name: string) => {
       lastFocusedWindow: true
     },
     (tabs) => {
-      const currentUrl = tabs[0].url || '';
+      const currentUrl = tabs[0]?.url || '';
       if (currentUrl.trim() === '') {
         return;
       }
+
       chrome.storage.local.get(name, (data: ListStorage) => {
         const list = data[name] || [];
+
+        // 同じパターンなら弾く
+        const samePatternIndex = list.findIndex((li) => li['pattern'] === currentUrl);
+        if (samePatternIndex !== -1) {
+          return;
+        }
+
         const nextList = [...list, { pattern: currentUrl, regexp: false }];
         chrome.storage.local.set({ [name]: nextList }).catch((e: unknown) => console.error(e));
       });
